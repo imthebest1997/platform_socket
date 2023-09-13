@@ -14,6 +14,7 @@ import { Fragment, useState } from "react";
 
 import { API } from "../../constant";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import { setToken } from "../../helpers/helpers";
 import { useAuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -31,20 +32,29 @@ export const SignIn = () => {
 
   const onFinish = async (values) => {
     setIsLoading(true);
+
     try {
       const value = {
         identifier: values.email,
         password: values.password,
       };
-      const response = await fetch(`${API}/auth/local`, {
-        method: "POST",
+      
+      // const response = await fetch(`${API}/auth/local`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(value),
+      // });
+
+      const response = await axios.post(`${API}/auth/local`, value, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(value),
       });
 
-      const data = await response.json();
+      const data = response.data;
+
       if (data?.error) {
         throw data?.error;
       } else {
@@ -58,6 +68,7 @@ export const SignIn = () => {
 
         navigate("/profile", { replace: true });
       }
+
     } catch (error) {
       console.error(error);
       setError(error?.message ?? "Something went wrong!");
