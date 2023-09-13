@@ -22,7 +22,7 @@ export const Profile = () => {
         body: JSON.stringify(data),
       });
       const responseData = await response.json();
-
+      
       setUser(responseData);
       message.success("Data saved successfully!");
     } catch (error) {
@@ -42,14 +42,9 @@ export const Profile = () => {
       <Form
         layout="vertical"
         initialValues={{
-          username: user?.username,
+          username: user?.user.username,
           email: user?.email,
-          twitter_username: user?.twitter_username,
-          linkedin_username: user?.linkedin_username,
-          github_username: user?.github_username,
-          avatar_url: user?.avatar_url,
           website_url: user?.website_url,
-          about: user?.about,
         }}
         onFinish={handleProfileUpdate}
       >

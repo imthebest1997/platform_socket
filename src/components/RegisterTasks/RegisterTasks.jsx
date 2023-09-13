@@ -10,7 +10,7 @@ export const RegisterTasks = ({onNewTask}) => {
         task_finish_date: "",
         file_size_maximun: "",
         accepted_files: "",
-        lessons: [30],
+        lessons: [],
         user_created: 536
     });
     
@@ -18,7 +18,9 @@ export const RegisterTasks = ({onNewTask}) => {
     const onSubmit = (event)=>{
         event.preventDefault();
         if(title == "" || content == '' || task_finish_date == '' || file_size_maximun == '' || accepted_files == "") return toast.error("El registro no esta completo, verifique los campos");
+        console.log(formState.lessons);
         onNewTask(formState);
+        
     }
 
     return (
@@ -107,5 +109,5 @@ export const RegisterTasks = ({onNewTask}) => {
 }
 
 RegisterTasks.propTypes = {
-    onNewTask: PropTypes.func
+    onNewTask: PropTypes.func,
 }

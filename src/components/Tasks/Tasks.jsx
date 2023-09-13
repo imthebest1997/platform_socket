@@ -5,23 +5,21 @@ import axios from 'axios'
 import { getToken } from "../../helpers/helpers";
 import { socket } from "../../config/socket";
 import { toast } from "react-toastify";
-
-socket.on("hello", (res) => {
-  console.log(res);
-  toast.success(res.message);
-});
-
-socket.on('taskCreated', (task) => {
-  console.log(task);
-  toast.success(task.message);
-});
-
+import { useAuthContext } from "../../context/AuthContext";
 
 export const Tasks = () => {
   const token = getToken();
   const [tasks, setTasks] = useState([]);
+  const [lessons, setLessons] = useState([6]); // Cuando se use en produccion, se debe enviar como parametro el slug o id del lesson, en el SetState
+  const { user } = useAuthContext();
 
   useEffect(() => {
+
+    //Descomentar cuando se adapte al proyecto original, se debe insertar cuando se ingrese al curso x primera vez
+    // socket.emit("join", { lessons }, (error) => { //Sending the username to the backend as the user connects.
+    //   if (error) return alert(error);
+    // });
+    
     axios({
       headers: {
         Authorization: `Bearer ${token}`,
@@ -63,10 +61,18 @@ export const Tasks = () => {
 
   },[socket, token])
 
+
+  useEffect(() => {
+    socket.emit("join", { lessonsId:lessons }, (error) => { 
+      if (error) return toast.error(error);
+    });
+  }, [lessons]);
+
+  //Envio de objeto con  sockets
   const onAddTask = (task) => {
-    // setTasks([task, ...tasks])
     socket.emit("create_task", {
       ...task,
+      lessons,
       token
     }, (error) => {
       if (error) {
@@ -75,10 +81,24 @@ export const Tasks = () => {
     });
   }
 
+  //Seteo del curso al cual se asigna la tarea
+  const onSetLesson = (lessonId) =>{
+    setLessons([lessonId]);
+  };
 
   return (
     <>
       <div className="row">
+        <div className="col-md-12  d-flex justify-content-center">
+          <h1>ID User: {user?.user.username} </h1>
+        </div>
+        {/* Botones para entrar a notificaciones por cursos */}
+        <div className="col-md-12 d-flex justify-content-center">
+          <button className="btn btn-primary"      onClick={()=>onSetLesson(6)}> Curso A </button>
+          <button className="btn btn-success mx-2" onClick={()=>onSetLesson(7)}> Curso B </button>
+          <button className="btn btn-secondary"    onClick={()=>onSetLesson(16)}> Curso C </button>
+          <button className="btn btn-warning mx-2" onClick={()=>onSetLesson(30)}> Curso D </button>
+        </div>
         <div className="col-md-6">
           <table className="table table-striped table-hover">
             <thead>

@@ -66,7 +66,7 @@ export const SignIn = () => {
 
         message.success(`Welcome back ${data.user.username}!`);
 
-        navigate("/profile", { replace: true });
+        navigate("/");
       }
 
     } catch (error) {
