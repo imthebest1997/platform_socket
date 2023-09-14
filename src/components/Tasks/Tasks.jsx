@@ -7,14 +7,16 @@ import { socket } from "../../config/socket";
 import { toast } from "react-toastify";
 import { useAuthContext } from "../../context/AuthContext";
 
+// import cursosJson from "../../resources/cursos.json"
+  
 export const Tasks = () => {
   const token = getToken();
   const [tasks, setTasks] = useState([]);
-  const [lessons, setLessons] = useState([6]); // Cuando se use en produccion, se debe enviar como parametro el slug o id del lesson, en el SetState
   const { user } = useAuthContext();
+  
+  socket.emit('setUserId', user?.user.id);
 
   useEffect(() => {
-
     //Descomentar cuando se adapte al proyecto original, se debe insertar cuando se ingrese al curso x primera vez
     // socket.emit("join", { lessons }, (error) => { //Sending the username to the backend as the user connects.
     //   if (error) return alert(error);
@@ -30,7 +32,6 @@ export const Tasks = () => {
       setTasks(res.data);
     });    
   }, [token]);
-
   
   useEffect(() => {
     const handleTaskNotification = async (data, error) => {
@@ -61,19 +62,13 @@ export const Tasks = () => {
 
   },[socket, token])
 
-
-  useEffect(() => {
-    socket.emit("join", { lessonsId:lessons }, (error) => { 
-      if (error) return toast.error(error);
-    });
-  }, [lessons]);
-
   //Envio de objeto con  sockets
-  const onAddTask = (task) => {
+  const onAddTask = (task, students) => { 
+    console.log(students);       
     socket.emit("create_task", {
       ...task,
-      lessons,
-      token
+      token,
+      students
     }, (error) => {
       if (error) {
         toast.error(error);
@@ -81,24 +76,13 @@ export const Tasks = () => {
     });
   }
 
-  //Seteo del curso al cual se asigna la tarea
-  const onSetLesson = (lessonId) =>{
-    setLessons([lessonId]);
-  };
-
   return (
     <>
       <div className="row">
         <div className="col-md-12  d-flex justify-content-center">
           <h1>ID User: {user?.user.username} </h1>
         </div>
-        {/* Botones para entrar a notificaciones por cursos */}
-        <div className="col-md-12 d-flex justify-content-center">
-          <button className="btn btn-primary"      onClick={()=>onSetLesson(6)}> Curso A </button>
-          <button className="btn btn-success mx-2" onClick={()=>onSetLesson(7)}> Curso B </button>
-          <button className="btn btn-secondary"    onClick={()=>onSetLesson(16)}> Curso C </button>
-          <button className="btn btn-warning mx-2" onClick={()=>onSetLesson(30)}> Curso D </button>
-        </div>
+
         <div className="col-md-6">
           <table className="table table-striped table-hover">
             <thead>
@@ -124,10 +108,14 @@ export const Tasks = () => {
           </table>
         </div>
 
-        <div className="col-md-6">
-            <h1>Register Form</h1>
-            <RegisterTasks onNewTask = { (value) => onAddTask(value) } />
-        </div>  
+        {
+          user?.user.role.id === 3 &&
+            <div className="col-md-6">
+                <h1>Register Form</h1>
+                <RegisterTasks onNewTask = { (value, students) => onAddTask(value, students) } />
+            </div>            
+        }
+
       </div>
     </>
   );

@@ -9,12 +9,12 @@ import ReactDOM from 'react-dom/client'
 import { ToastContainer } from 'react-toastify'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+//   <React.StrictMode>
      <AuthProvider>
         <BrowserRouter>
             <ToastContainer />
             <PlatformApp />                  
         </BrowserRouter>
      </AuthProvider>
-  </React.StrictMode>,
+   // </React.StrictMode>,
 )

@@ -1,26 +1,55 @@
+import { useEffect, useState } from "react";
+
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";
 import {useForm} from "../../hooks/useForm"
 
 export const RegisterTasks = ({onNewTask}) => {
-
-    const {formState, onInputChange, title, content, task_finish_date, file_size_maximun, accepted_files} = useForm({
+    
+    const {formState, onInputChange, title, content, task_finish_date, file_size_maximun, accepted_files, course, lessons} = useForm({
         title: '',
         content: '',
         task_finish_date: "",
         file_size_maximun: "",
         accepted_files: "",
-        lessons: [],
+        lessons: "",
+        course: "",
         user_created: 536
     });
     
+    const [lessonsByCourse, setLessonsByCourse] = useState([]);
+    const [students, setStudents] = useState([]);
     
+    const getLessonsAndStudentsByCourse = async (course) => {
+        const studentIds = [];
+        course = parseInt(course);
+        const url = 'http://localhost:5173/src/resources/cohorts.json';
+        const resp = await fetch(url);
+        const data = await resp.json();
+        const filteredData = data.filter(item => item.course_id === course);
+        // Extrae el arreglo de lessons de los objetos filtrados
+        const studentsArray = filteredData.map(item => item.students);
+        const lessonsArray = filteredData.map(item => item.lessons);
+
+        // const students = lessonsArray[0];
+        for(let {id} of studentsArray[0]){
+            studentIds.push(id);
+        }        
+        // Extrae el arreglo de lessons de los objetos filtrados
+        setStudents(studentIds);
+        setLessonsByCourse(lessonsArray[0]);
+    }
+
+    useEffect(() => {        
+        if(course != '')
+            getLessonsAndStudentsByCourse(course)
+    }, [course])
+    
+
     const onSubmit = (event)=>{
         event.preventDefault();
-        if(title == "" || content == '' || task_finish_date == '' || file_size_maximun == '' || accepted_files == "") return toast.error("El registro no esta completo, verifique los campos");
-        console.log(formState.lessons);
-        onNewTask(formState);
-        
+        if(title == "" || content == '' || task_finish_date == '' || file_size_maximun == '' || accepted_files == "" || lessons == "") return toast.error("El registro no esta completo, verifique los campos");
+        onNewTask(formState, students);        
     }
 
     return (
@@ -53,6 +82,7 @@ export const RegisterTasks = ({onNewTask}) => {
                 name='content' 
                 onChange={onInputChange}
             />
+
             </div>
 
             <div className="col-md-3 d-flex align-items-center">
@@ -61,7 +91,7 @@ export const RegisterTasks = ({onNewTask}) => {
 
             <div className="col-md-9 d-flex align-items-center">
                 <input 
-                    type="date" 
+                    type="datetime-local" 
                     className="form-control" 
                     id="txtFinishDate" 
                     name='task_finish_date' 
@@ -84,6 +114,37 @@ export const RegisterTasks = ({onNewTask}) => {
                 </select>
             </div>
 
+            <div className="col-md-3 d-flex align-items-center">
+                <label htmlFor="txtCursos"> Cursos: </label>
+            </div>
+
+            <div className="col-md-9 d-flex align-items-center">
+                <select name="course" id="txtCursos" className="form-control"  onChange={onInputChange}>
+                    <option value=""> -- Seleccione un curso --</option>
+                    <option value = {24}  > Cuarto 24 </option>
+                    <option value=  {4}  > Inicial II </option>
+                    <option value=  {21} > Cuarto A Test </option>
+                    <option value=  {22} > Cuarto B Test </option>
+                </select>
+            </div>
+
+
+            <div className="col-md-3 d-flex align-items-center">
+                <label htmlFor="txtLessons"> Clase: </label>
+            </div>
+
+            <div className="col-md-9 d-flex align-items-center">
+                <select name="lessons" id="txtLessons" className="form-control"  onChange={onInputChange}>
+                    <option value=""> -- Seleccione una clase --</option>
+                    {
+                        lessonsByCourse.map((lesson)=>{
+                            return (
+                                <option value={lesson} key={lesson}> {lesson} </option>
+                            )
+                        })
+                    }
+                </select>
+            </div>
 
 
             <div className="col-md-3 d-flex align-items-center">

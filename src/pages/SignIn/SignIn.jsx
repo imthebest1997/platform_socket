@@ -38,14 +38,16 @@ export const SignIn = () => {
         identifier: values.email,
         password: values.password,
       };
-      
+  
       // const response = await fetch(`${API}/auth/local`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
+      //     method: "POST",
+      //     headers: {
+      //         "Content-Type": "application/json",
       //   },
       //   body: JSON.stringify(value),
       // });
+
+      // console.log(JSON.stringify(value));
 
       const response = await axios.post(`${API}/auth/local`, value, {
         headers: {
@@ -54,7 +56,6 @@ export const SignIn = () => {
       });
 
       const data = response.data;
-
       if (data?.error) {
         throw data?.error;
       } else {
@@ -66,7 +67,7 @@ export const SignIn = () => {
 
         message.success(`Welcome back ${data.user.username}!`);
 
-        navigate("/");
+        navigate("/",);
       }
 
     } catch (error) {

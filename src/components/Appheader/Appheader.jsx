@@ -25,6 +25,12 @@ export const AppHeader = () => {
             <Button className="auth_button_login" href="/profile" type="link">
               {user.username}
             </Button>
+            
+            {/* Notifications */}
+            <button className="btn btn-primary">
+              N
+            </button>
+
             <Button
               className="auth_button_signUp"
               type="primary"

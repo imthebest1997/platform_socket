@@ -1,0 +1,75 @@
+[
+    {
+        "cohort": 27,
+        "course_id": 24,
+        "lessons":[6],        
+        "students":[
+            {
+                "id": 429,
+                "name": "​adelinaburgos87@outlook.com" 
+            },
+            {
+                "id": 415,
+                "name": "​almorsole05@gmail.com"
+            },
+            {
+                "id": 309,
+                "name": "andre27jazmin@gmail.com"
+            }
+        ]
+    },
+    {
+        "cohort": 28,
+        "course_id": 4,
+        "lessons":[2, 46, 7],        
+        "students":[
+            {
+                "id": 312,
+                "name": "​adakgabi@outlook.com" 
+            },
+            {
+                "id": 392,
+                "name": "​Ablorelynsanchezmsc@gmail.com"
+            }
+        ]
+    },
+    {
+        "cohort": 29,
+        "course_id": 21,
+        "lessons":[16, 44, 45],        
+        "students":[
+            {
+                "id": 312,
+                "name": "​adakgabi@outlook.com"
+            },
+            {
+                "id": 314,
+                "name":"​alejaefa@hotmail.es"
+            },
+            {
+                "id": 498,
+                "name": "​adrianvivi@hotmail.com"
+            },
+            {
+                "id": 415,
+                "name": "​almorsole05@gmail.com"
+            }
+        ]
+    },
+    {
+        "cohort":30,
+        "course_id": 22,
+        "lessons":[11, 30],        
+        "students":[
+            {
+                "id": 314,
+                "name": "​alejaefa@hotmail.es"
+            },
+            {
+                "id": 469,
+                "name": "​anasarango1986@hotmail.com"
+            }
+        ]
+    }
+
+]
