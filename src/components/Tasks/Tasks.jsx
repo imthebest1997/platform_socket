@@ -64,7 +64,6 @@ export const Tasks = () => {
 
   //Envio de objeto con  sockets
   const onAddTask = (task, students) => { 
-    console.log(students);       
     socket.emit("create_task", {
       ...task,
       token,

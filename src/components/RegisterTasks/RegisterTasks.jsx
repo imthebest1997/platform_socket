@@ -35,6 +35,7 @@ export const RegisterTasks = ({onNewTask}) => {
         for(let {id} of studentsArray[0]){
             studentIds.push(id);
         }        
+
         // Extrae el arreglo de lessons de los objetos filtrados
         setStudents(studentIds);
         setLessonsByCourse(lessonsArray[0]);
@@ -45,6 +46,10 @@ export const RegisterTasks = ({onNewTask}) => {
             getLessonsAndStudentsByCourse(course)
     }, [course])
     
+
+    useEffect(()=>{
+        console.log(students);
+    },[students])
 
     const onSubmit = (event)=>{
         event.preventDefault();
