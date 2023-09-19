@@ -16,7 +16,7 @@ export const PlatformApp = () => {
         </Col>
         <Col span={22} offset={1}>
           <Content>
-            <AppRoutes />
+              <AppRoutes />
           </Content>
         </Col>
       </Row>

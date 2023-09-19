@@ -3,25 +3,39 @@ import { useEffect, useState } from 'react'
 import { RegisterTasks } from '../RegisterTasks/RegisterTasks';
 import axios from 'axios'
 import { getToken } from "../../helpers/helpers";
-import { socket } from "../../config/socket";
+import { socket } from "../../config/socket"
 import { toast } from "react-toastify";
 import { useAuthContext } from "../../context/AuthContext";
 
-// import cursosJson from "../../resources/cursos.json"
-  
+// import { useSocket } from "../../hooks/useSocket";
+
 export const Tasks = () => {
   const token = getToken();
   const [tasks, setTasks] = useState([]);
   const { user } = useAuthContext();
-  
-  socket.emit('setUserId', user?.user.id);
+  //const {online, socket} = useSocket();
+
+  // useEffect(()=>{
+  //   if(user?.user.id !== undefined){
+  //     socket.emit('setUserId', {userId: user?.user.id, token});      
+  //   }
+  // }, [user])
 
   useEffect(() => {
-    //Descomentar cuando se adapte al proyecto original, se debe insertar cuando se ingrese al curso x primera vez
-    // socket.emit("join", { lessons }, (error) => { //Sending the username to the backend as the user connects.
-    //   if (error) return alert(error);
-    // });
+    const handleConnect = () => {
+      if (user?.user.id !== undefined) {
+        socket.emit('setUserId', { userId: user?.user.id, token });
+      }
+    };
+  
+    socket.on('connect', handleConnect);
+  
+    return () => {
+      socket.off('connect', handleConnect);
+    };
+  }, [user]);
     
+  useEffect(() => {    
     axios({
       headers: {
         Authorization: `Bearer ${token}`,
@@ -54,10 +68,10 @@ export const Tasks = () => {
       }
     };
   
-    socket.on("task", handleTaskNotification);
+    socket.on("task_created", handleTaskNotification);
 
     return () => {
-      socket.off("task", handleTaskNotification);
+      socket.off("task_created", handleTaskNotification);
     };
 
   },[socket, token])
@@ -80,6 +94,12 @@ export const Tasks = () => {
       <div className="row">
         <div className="col-md-12  d-flex justify-content-center">
           <h1>ID User: {user?.user.username} </h1>
+        </div>
+        
+        <div className="col-md-12 d-flex justify-content-center">
+          <h2>Status: {
+              // online ? 'Online' : 'Offline'  
+          }</h2>
         </div>
 
         <div className="col-md-6">
