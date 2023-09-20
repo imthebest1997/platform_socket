@@ -15,26 +15,19 @@ export const Tasks = () => {
   const { user } = useAuthContext();
   //const {online, socket} = useSocket();
 
-  // useEffect(()=>{
-  //   if(user?.user.id !== undefined){
-  //     socket.emit('setUserId', {userId: user?.user.id, token});      
-  //   }
-  // }, [user])
+  useEffect(()=>{
+    if(user?.user.id !== undefined){
+      socket.emit('setUserId', {userId: user?.user.id, token});      
+    }
+  }, [user?.user.id])
 
-  useEffect(() => {
-    const handleConnect = () => {
-      if (user?.user.id !== undefined) {
-        socket.emit('setUserId', { userId: user?.user.id, token });
-      }
-    };
   
-    socket.on('connect', handleConnect);
+  socket.io.on('reconnect', () => {
+    // Volver a emitir el evento "setUserId" al servidor
+    socket.emit('setUserId', {userId: user?.user.id, token});
+  });
   
-    return () => {
-      socket.off('connect', handleConnect);
-    };
-  }, [user]);
-    
+
   useEffect(() => {    
     axios({
       headers: {
