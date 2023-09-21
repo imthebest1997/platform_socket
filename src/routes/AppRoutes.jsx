@@ -4,7 +4,7 @@ import { Courses } from "../components/Courses/Courses";
 import { Profile } from "../components/Profile/Profile";
 import { SignIn } from "../pages/SignIn/SignIn";
 import { SignUp } from "../pages/SignUp/SignUp";
-import { Tasks } from "../components/Tasks/Tasks";
+import { Tasks } from "../pages/Tasks/Tasks";
 import { getToken } from "../helpers/helpers";
 
 // import {SocialCards} from "../components/SocialCards/SocialCards";
