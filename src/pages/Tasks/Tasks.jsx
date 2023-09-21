@@ -5,7 +5,7 @@ import { useTask } from '../../hooks/Tasks/useTask';
 
 export const Tasks = () => {
   const { user } = useAuthContext();
-  const { tasks, onAddTask } = useTask();
+  const { tasks, onAddTask, online } = useTask();
 
   return (
     <>
@@ -16,7 +16,7 @@ export const Tasks = () => {
         
         <div className="col-md-12 d-flex justify-content-center">
           <h2>Status: {
-              // online ? 'Online' : 'Offline'  
+              online ? 'Online' : 'Offline'  
           }</h2>
         </div>
 

@@ -2,14 +2,16 @@ import { useEffect, useState } from 'react'
 
 import axios from 'axios'
 import { getToken } from "../../helpers/helpers";
-import { socket } from "../../config/socket"
 import { toast } from "react-toastify";
 import { useAuthContext } from "../../context/AuthContext";
+import { useSocketContext } from "../../hooks/useSocketContext"
 
+// import { socket } from "../../config/socket"
 export const useTask = () => {
     const token = getToken();
     const [tasks, setTasks] = useState([]);
     const { user } = useAuthContext();
+    const {online, socket} = useSocketContext();
     
     useEffect(()=>{
         if(user?.user.id !== undefined){
@@ -96,6 +98,7 @@ export const useTask = () => {
     
     return{
         tasks,
-        onAddTask
+        onAddTask,
+        online
     }
 }
