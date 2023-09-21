@@ -70,16 +70,36 @@ export const Tasks = () => {
   },[socket, token])
 
   //Envio de objeto con  sockets
-  const onAddTask = (task, students) => { 
-    socket.emit("create_task", {
-      ...task,
-      token,
-      students
-    }, (error) => {
-      if (error) {
-        toast.error(error);
-      }
-    });
+  const onAddTask = async (task, students) =>{ 
+    const {course, ...taskCreated} = task;
+
+    let strapiData = {
+      data: {
+        ...taskCreated,
+      },
+    };
+
+    try {
+      await axios
+      .post("http://localhost:1337/api/tasks", strapiData,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }).then(() => {
+        //la tarea creada es opcional en su envio, se puede enviar
+        //solo el nombre y la fecha o los datos que se deseen
+        socket.emit("create_task", {
+          students, 
+          ...taskCreated
+        }, (error) => {
+          if (error) {
+            toast.error(error);
+          }
+        });
+      });
+    }catch (error) {
+        toast.error(error);      
+    }
   }
 
   return (
