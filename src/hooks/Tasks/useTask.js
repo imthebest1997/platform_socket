@@ -40,7 +40,7 @@ export const useTask = () => {
     useEffect(() => {
         const handleTaskNotification = async (data, error) => {
             if (data) {
-                toast.success(data.message);
+                toast.success(data);
                 try {
                     const response = await axios({
                     headers: {
@@ -84,7 +84,7 @@ export const useTask = () => {
             //solo el nombre y la fecha o los datos que se deseen
             socket.emit("create_task", {
               students, 
-              ...taskCreated
+              message: "New task created"
             }, (error) => {
               if (error) {
                 toast.error(error);
