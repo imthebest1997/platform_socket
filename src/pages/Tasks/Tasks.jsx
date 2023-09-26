@@ -39,8 +39,8 @@ export const Tasks = () => {
         {
           user?.user.role.id === 3 &&
             <div className="col-md-6">
-                <h1>Register Form</h1>
-                <RegisterTasks onNewTask = { (value, students) => onAddTask(value, students) } />
+              <h1>Register Form</h1>
+              <RegisterTasks onNewTask = { (value) => onAddTask(value) } />
             </div>            
         }
       </div>

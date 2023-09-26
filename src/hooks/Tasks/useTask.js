@@ -18,87 +18,86 @@ export const useTask = () => {
           socket.emit('setUserId', {userId: user?.user.id, token});      
         }
     }, [user?.user.id])
-          
-    socket.io.on('reconnect', () => {
+
+    useEffect(()=>{
+      socket.io.on('reconnect', () => {
         // Volver a emitir el evento "setUserId" al servidor
         socket.emit('setUserId', {userId: user?.user.id, token});
-    });
-      
+      });          
+    }, [user?.user.id, socket, token])
     
+          
     useEffect(() => {    
-        axios({
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            method: "get",
-            url: "http://localhost:1337/api/tasks",
-        }).then((res) => {
-            setTasks(res.data);
-        });    
+      axios({
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        method: "get",
+        url: "http://localhost:1337/api/tasks",
+      }).then((res) => {
+          setTasks(res.data);
+      });    
     }, [token]);
       
-    useEffect(() => {
-        const handleTaskNotification = async (data, error) => {
-            if (data) {
-                toast.success(data);
-                try {
-                    const response = await axios({
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                    method: "get",
-                    url: "http://localhost:1337/api/tasks",
-                    });
-                    setTasks(response.data);
-                } catch (error) {
-                    toast.error(error);
-                }
-            } else {
-                toast.error(error);
-            }
-        };
-    
-        socket.on("task_created", handleTaskNotification);
-        return () => socket.off("task_created", handleTaskNotification);
+    const handleTaskNotification = async (data, error) => {
+      if (data) {
+        toast.success(data);
+        try {
+          const response = await axios({
+          headers: {
+              Authorization: `Bearer ${token}`,
+          },
+          method: "get",
+          url: "http://localhost:1337/api/tasks",
+          });
+          setTasks(response.data);
+        } catch (error) {
+            toast.error(error);
+        }
+      } else {
+        toast.error(error);
+      }
+    };
 
+    useEffect(() => {    
+      socket.on("task_created", handleTaskNotification);
+      return () => socket.off("task_created", handleTaskNotification);
     },[socket, token])
     
+
+  useEffect(() => {  
+    socket.on("task_updated", handleTaskNotification);
+    return () => socket.off("task_updated", handleTaskNotification);
+  },[socket, token])
+
+    
       //Envio de objeto con  sockets
-    const onAddTask = async (task, students) =>{ 
-        const {course, ...taskCreated} = task;
-        
-        let strapiData = {
-          data: {
-            ...taskCreated,
-          },
-        };
-    
-        try {
-          await axios
-          .post("http://localhost:1337/api/tasks", strapiData,{
-            headers: {
-              Authorization: `Bearer ${token}`,
-            }
-          }).then(() => {
-            //la tarea creada es opcional en su envio, se puede enviar
-            //solo el nombre y la fecha o los datos que se deseen
-            socket.emit("create_task", {
-              students, 
-              message: "New task created"
-            }, (error) => {
-              if (error) {
-                toast.error(error);
-              }
-            });
-          });
-        }catch (error) {
-            toast.error(error);      
+  const onAddTask = async (task) =>{ 
+    const {course, lessons, ...taskCreated} = task;      
+    let strapiData = {
+      data: {
+        ...taskCreated,
+        lessons: [lessons]
+      },
+    };
+  
+    try {
+      await axios
+      .post("http://localhost:1337/api/tasks", strapiData,{
+        headers: {
+          Authorization: `Bearer ${token}`,
         }
+      }).then(()=>{
+        console.log(strapiData.data);
+      })
+    }catch (error) {
+        toast.error(error);      
     }
+  }
     
-    return{
-        tasks,
-        onAddTask,
-        online
-    }
+  return{
+      tasks,
+      onAddTask,
+      online
+  }
 }

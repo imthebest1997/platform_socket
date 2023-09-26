@@ -18,43 +18,29 @@ export const RegisterTasks = ({onNewTask}) => {
     });
     
     const [lessonsByCourse, setLessonsByCourse] = useState([]);
-    const [students, setStudents] = useState([]);
     
-    const getLessonsAndStudentsByCourse = async (course) => {
-        const studentIds = [];
+    const getLessonsByCourse = async (course) => {
         course = parseInt(course);
         const url = 'http://localhost:5173/src/resources/cohorts.json';
         const resp = await fetch(url);
         const data = await resp.json();
         const filteredData = data.filter(item => item.course_id === course);
         // Extrae el arreglo de lessons de los objetos filtrados
-        const studentsArray = filteredData.map(item => item.students);
         const lessonsArray = filteredData.map(item => item.lessons);
 
-        // const students = lessonsArray[0];
-        for(let {id} of studentsArray[0]){
-            studentIds.push(id);
-        }        
-
         // Extrae el arreglo de lessons de los objetos filtrados
-        setStudents(studentIds);
         setLessonsByCourse(lessonsArray[0]);
     }
 
     useEffect(() => {        
         if(course != '')
-            getLessonsAndStudentsByCourse(course)
+            getLessonsByCourse(course)
     }, [course])
     
-
-    useEffect(()=>{
-        console.log(students);
-    },[students])
-
     const onSubmit = (event)=>{
         event.preventDefault();
         if(title == "" || content == '' || task_finish_date == '' || file_size_maximun == '' || accepted_files == "" || lessons == "") return toast.error("El registro no esta completo, verifique los campos");
-        onNewTask(formState, students);        
+        onNewTask(formState);        
     }
 
     return (
