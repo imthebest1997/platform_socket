@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import { Courses } from "../components/Courses/Courses";
+import { InfoTask } from "../pages/Tasks/InfoTask";
 import { Profile } from "../components/Profile/Profile";
 import { SignIn } from "../pages/SignIn/SignIn";
 import { SignUp } from "../pages/SignUp/SignUp";
@@ -19,6 +20,7 @@ export const AppRoutes = () => {
             element={getToken() ? <Tasks /> : <Navigate to="/signin" />}
           />
           <Route path="/tasks" element={<Courses />} />
+          <Route path="/info-task" element ={<InfoTask/>} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route

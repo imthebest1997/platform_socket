@@ -1,3 +1,4 @@
+import { Notifications } from '../../components/Notifications/Notifications';
 import { RegisterTasks } from '../../components/RegisterTasks/RegisterTasks';
 import { TasksList } from '../../components/Tasks/TasksList';
 import { useAuthContext } from "../../context/AuthContext";
@@ -18,6 +19,11 @@ export const Tasks = () => {
           <h2>Status: {
               online ? 'Online' : 'Offline'  
           }</h2>
+        </div>
+
+        <div className="col-md-12 d-flex justify-content-center">
+          Notifications
+          <Notifications/>
         </div>
 
         <div className="col-md-6">

@@ -1,6 +1,6 @@
 import { Button, Space } from "antd";
 
-import { CgWebsite } from "react-icons/cg";
+import { Notifications } from "../Notifications/Notifications";
 import { removeToken } from "../../helpers/helpers";
 import { useAuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -16,20 +16,16 @@ export const AppHeader = () => {
 
   return (
     <Space className="header_space">
-      <Button className="header_space_brand" href="/" type="link">
-        <CgWebsite size={64} />
+      <Button className="header_space_brand" href="/" type="link">        
       </Button>
-      <Space className="auth_buttons">
+      <Space>
         {user ? (
           <>
             <Button className="auth_button_login" href="/profile" type="link">
               {user.username}
             </Button>
-            
-            {/* Notifications */}
-            <button className="btn btn-primary">
-              N
-            </button>
+
+            <Notifications/>
 
             <Button
               className="auth_button_signUp"
