@@ -55,7 +55,11 @@
 
 .bandeja-notif::-webkit-scrollbar {
     width: 5px;
-    background-color: #F5F5F5;
+    background-color: #f5f5f5;
+}
+
+.bandeja-notif::-webkit-scrollbar-thumb {
+    background-color: #2b2d42;
 }
 
 /* ITEM NOTIFICACION */
