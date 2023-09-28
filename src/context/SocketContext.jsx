@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import { createContext } from "react";
-import { useSocket } from "../hooks/useSocket";
+import { useSocket } from "../hooks/Socket/useSocket";
 
 export const SocketContext = createContext();
 

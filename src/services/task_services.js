@@ -1,16 +1,6 @@
-import axios from 'axios'
+import instance from './config'
 
-export const listTasks = async (token)=>{
-    try {
-        const response = await axios({
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-        method: "get",
-        url: "http://localhost:1337/api/tasks",
-        });
-        setTasks(response.data);
-      } catch (error) {
-          toast.error(error);
-      }
+export const listTasks = async ()=>{
+    const {data} = await instance.get("/tasks");
+    return data;
 }

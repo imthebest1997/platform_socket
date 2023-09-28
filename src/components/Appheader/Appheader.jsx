@@ -1,6 +1,5 @@
 import { Button, Space } from "antd";
 
-import { Notifications } from "../Notifications/Notifications";
 import { removeToken } from "../../helpers/helpers";
 import { useAuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -24,8 +23,6 @@ export const AppHeader = () => {
             <Button className="auth_button_login" href="/profile" type="link">
               {user.username}
             </Button>
-
-            <Notifications/>
 
             <Button
               className="auth_button_signUp"

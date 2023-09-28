@@ -7,7 +7,6 @@ import { useTask } from '../../hooks/Tasks/useTask';
 export const Tasks = () => {
   const { user } = useAuthContext();
   const { tasks, onAddTask, online } = useTask();
-
   return (
     <>
       <div className="row">
@@ -21,8 +20,8 @@ export const Tasks = () => {
           }</h2>
         </div>
 
-        <div className="col-md-12 d-flex justify-content-center">
-          Notifications
+        <div className="col-md-12 d-flex justify-content-center align-items-center">
+          Notifications:
           <Notifications/>
         </div>
 
