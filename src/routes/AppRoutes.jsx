@@ -20,7 +20,7 @@ export const AppRoutes = () => {
               element={getToken() ? <Tasks /> : <Navigate to="/signin" />}
             />
             <Route path="/tasks" element={<Courses />} />
-            <Route path="/info-task" element ={<InfoTask/>} />
+            <Route path="/info-task/:task" element ={<InfoTask/>} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
             <Route

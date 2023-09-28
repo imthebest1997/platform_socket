@@ -12,7 +12,7 @@ import { ToastContainer } from 'react-toastify'
 ReactDOM.createRoot(document.getElementById('root')).render(
 //   <React.StrictMode>      
       <AuthProvider>
-         <BrowserRouter>
+         <BrowserRouter hashType="noslash">
             <ToastContainer />
             <PlatformApp />                  
          </BrowserRouter>

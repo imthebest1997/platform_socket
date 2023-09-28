@@ -4,19 +4,21 @@ import axios from "axios";
 import { getToken } from "../../helpers/helpers";
 import { toast } from "react-toastify";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const ItemNotification = ({notificacion}) => {
     const {title, body, isRead} = notificacion;
     const {message} = body;
     const token = getToken();
     const {loadNotifications} = useContext(NotificationContext);
-
+    const navigate = useNavigate();
 
     const redireccionarActividad = async ()=>{
         if(!notificacion.isRead){
             await updateStateRead(notificacion);
         }
         toast.info("Redireccionar a la ruta del objeto");
+        navigate(notificacion.link, {state: notificacion});
     }
 
     const updateStateRead = async(data) =>{
