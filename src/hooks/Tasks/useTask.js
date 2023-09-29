@@ -1,8 +1,7 @@
+import { createTask, listTasks } from "../../services/task_services";
 import { useEffect, useState } from "react";
 
-import axios from "axios";
 import { getToken } from "../../helpers/helpers";
-import { listTasks } from "../../services/task_services";
 import { toast } from "react-toastify";
 import { useAuthContext } from "../../context/AuthContext";
 import { useSocketContext } from "../Socket/useSocketContext";
@@ -39,7 +38,7 @@ export const useTask = () => {
 
   const handleTaskNotification = async (data, error) => {
     if (data) {
-      toast.success(data);
+      // toast.success(data);
       try {
         const data = await listTasks();
         setTasks(data);
@@ -71,15 +70,8 @@ export const useTask = () => {
     };
 
     try {
-      await axios
-        .post("http://localhost:1337/api/tasks", strapiData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then(() => {
-          console.log(strapiData.data);
-        });
+      const data = await createTask(strapiData);
+      console.log(data);      
     } catch (error) {
       toast.error(error);
     }

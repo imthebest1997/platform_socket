@@ -20,13 +20,14 @@ export const AppRoutes = () => {
               element={getToken() ? <Tasks /> : <Navigate to="/signin" />}
             />
             <Route path="/tasks" element={<Courses />} />
-            <Route path="/info-task/:task" element ={<InfoTask/>} />
+            <Route path="/info-task/:slug" element ={<InfoTask/>} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
             <Route
               path="/profile"
               element={getToken() ? <Profile /> : <Navigate to="/signin" />}
             />
+            <Route path="/*" element={<Navigate to="/"/>}/>
         </Routes>
       </NotificationProvider>      
     </SocketProvider>

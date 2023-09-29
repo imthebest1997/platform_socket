@@ -1,14 +1,15 @@
+import { calculateTimeElapsed, getToken } from "../../helpers/helpers";
+
 import { NotificationContext } from "../../context/NotificationContext";
 import PropTypes from "prop-types";
 import axios from "axios";
-import { getToken } from "../../helpers/helpers";
 import { toast } from "react-toastify";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const ItemNotification = ({notificacion}) => {
     const {title, body, isRead} = notificacion;
-    const {message} = body;
+    const {message, fecha_emision} = body;
     const token = getToken();
     const {loadNotifications} = useContext(NotificationContext);
     const navigate = useNavigate();
@@ -17,8 +18,9 @@ export const ItemNotification = ({notificacion}) => {
         if(!notificacion.isRead){
             await updateStateRead(notificacion);
         }
-        toast.info("Redireccionar a la ruta del objeto");
-        navigate(notificacion.link, {state: notificacion});
+        navigate(`info-task${notificacion.link}`,{
+            state: notificacion.body.tipo_actividad
+        });
     }
 
     const updateStateRead = async(data) =>{
@@ -39,7 +41,7 @@ export const ItemNotification = ({notificacion}) => {
             <div className="body-notification">
                 <h6>{title}</h6>
                 <p className="limit-2-lines">{message}</p>
-                <span>Hace 12 horas</span>
+                <span>Hace {calculateTimeElapsed(fecha_emision)}</span>
             </div>
 
             <div className="state-notification">

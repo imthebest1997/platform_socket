@@ -1,20 +1,28 @@
-import { useLocation } from "react-router-dom";
+import { useInfoTask } from "../../hooks/Tasks/useInfoTask"
 
 export const InfoTask = () => {
-  const location = useLocation();
-  const data = location.state;
   
+  const {task, handleBackPage} = useInfoTask();
+
   return (
     <>
       <h1>InfoTask</h1>
-      <div className="row">
-        <div className="col-6"></div>
-        <div className="col-6">
-          <code>
-            {JSON.stringify(data, null, 5)}
-          </code>
+      {task && (
+        <div className="row">
+          <div className="col-10">
+            <h3> <b>ID: </b> {task.id}</h3>
+            <h3> <b>Title: </b> {task.title}</h3>
+            <h5> <b>Content: </b>  {task.content}</h5>
+            <h5> <b>Finish Date: </b>  {task.task_finish_date}</h5>
+            <button 
+              className="btn btn-outline-dark"
+              onClick={handleBackPage}
+            >
+              Regresar
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </>
   )
 }
